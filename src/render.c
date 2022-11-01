@@ -55,10 +55,10 @@ void render_con(Con *con, bool already_inset) {
     if (!already_inset && should_inset) {
         gaps_t gaps = calculate_effective_gaps(con);
         Rect inset = (Rect){
-            has_adjacent_container(con, D_LEFT) ? gaps.inner : gaps.left,
-            has_adjacent_container(con, D_UP) ? gaps.inner : gaps.top,
-            has_adjacent_container(con, D_RIGHT) ? -gaps.inner : -gaps.right,
-            has_adjacent_container(con, D_DOWN) ? -gaps.inner : -gaps.bottom};
+            has_adjacent_container(con, D_LEFT) ? gaps.inner_horizontal : gaps.left,
+            has_adjacent_container(con, D_UP) ? gaps.inner_vertical : gaps.top,
+            has_adjacent_container(con, D_RIGHT) ? -gaps.inner_horizontal : -gaps.right,
+            has_adjacent_container(con, D_DOWN) ? -gaps.inner_vertical : -gaps.bottom};
         inset.width -= inset.x;
         inset.height -= inset.y;
 

@@ -2359,7 +2359,8 @@ gaps_t calculate_effective_gaps(Con *con) {
         return (gaps_t){0, 0, 0, 0, 0};
 
     gaps_t gaps = {
-        .inner = (workspace->gaps.inner + config.gaps.inner) / 2,
+        .inner_vertical = (workspace->gaps.inner_vertical + config.gaps.inner_vertical) / 2,
+        .inner_horizontal = (workspace->gaps.inner_horizontal + config.gaps.inner_horizontal) / 2,
         .top = 0,
         .right = 0,
         .bottom = 0,
@@ -2373,10 +2374,10 @@ gaps_t calculate_effective_gaps(Con *con) {
     }
 
     /* Outer gaps are added on top of inner gaps. */
-    gaps.top += 2 * gaps.inner;
-    gaps.right += 2 * gaps.inner;
-    gaps.bottom += 2 * gaps.inner;
-    gaps.left += 2 * gaps.inner;
+    gaps.top += 2 * gaps.inner_vertical;
+    gaps.right += 2 * gaps.inner_horizontal;
+    gaps.bottom += 2 * gaps.inner_vertical;
+    gaps.left += 2 * gaps.inner_horizontal;
 
     return gaps;
 }

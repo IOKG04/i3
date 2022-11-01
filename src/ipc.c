@@ -249,7 +249,11 @@ static void dump_gaps(yajl_gen gen, const char *name, gaps_t gaps) {
     ystr(name);
     y(map_open);
     ystr("inner");
-    y(integer, gaps.inner);
+    y(integer, gaps.inner_vertical);
+    ystr("inner_vertical");
+    y(integer, gaps.inner_vertical);
+    ystr("inner_horizontal");
+    y(integer, gaps.inner_horizontal);
 
     // TODO: the i3ipc Python modules recognize gaps, but only inner/outer
     // This is currently here to preserve compatibility with that

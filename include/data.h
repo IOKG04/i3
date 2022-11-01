@@ -148,7 +148,8 @@ typedef enum {
 } warping_t;
 
 struct gaps_t {
-    int inner;
+    int inner_vertical;
+    int inner_horizontal;
     int top;
     int right;
     int bottom;

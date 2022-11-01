@@ -238,7 +238,12 @@ static void create_gaps_assignment(const char *workspace, const char *scope, gap
     TAILQ_FOREACH (assignment, &ws_assignments, ws_assignments) {
         if (strcasecmp(assignment->name, workspace) == 0) {
             if (!strcmp(scope, "inner")) {
-                assignment->gaps.inner = gaps.inner;
+                assignment->gaps.inner_vertical = gaps.inner_vertical;
+                assignment->gaps.inner_horizontal = gaps.inner_horizontal;
+            } else if (!strcmp(scope, "inner_vertical")) {
+                assignment->gaps.inner_vertical = gaps.inner_vertical;
+            } else if (!strcmp(scope, "inner_horizontal")) {
+                assignment->gaps.inner_horizontal = gaps.inner_horizontal;
             } else if (!strcmp(scope, "outer")) {
                 assignment->gaps.top = gaps.top;
                 assignment->gaps.right = gaps.right;
@@ -271,7 +276,12 @@ static void create_gaps_assignment(const char *workspace, const char *scope, gap
     assignment->name = sstrdup(workspace);
     assignment->output = NULL;
     if (!strcmp(scope, "inner")) {
-        assignment->gaps.inner = gaps.inner;
+        assignment->gaps.inner_vertical = gaps.inner_vertical;
+        assignment->gaps.inner_horizontal = gaps.inner_horizontal;
+    } else if (!strcmp(scope, "inner_vertical")) {
+        assignment->gaps.inner_vertical = gaps.inner_vertical;
+    } else if (!strcmp(scope, "inner_horizontal")) {
+        assignment->gaps.inner_horizontal = gaps.inner_horizontal;
     } else if (!strcmp(scope, "outer")) {
         assignment->gaps.top = gaps.top;
         assignment->gaps.right = gaps.right;
@@ -302,9 +312,25 @@ CFGFUN(gaps, const char *workspace, const char *scope, const long value) {
     gaps_t gaps = (gaps_t){0, 0, 0, 0, 0};
     if (!strcmp(scope, "inner")) {
         if (workspace == NULL)
-            config.gaps.inner = pixels;
+            config.gaps.inner_vertical = pixels;
+            config.gaps.inner_horizontal = pixels;
         else {
-            gaps.inner = pixels - config.gaps.inner;
+            gaps.inner_vertical = pixels - config.gaps.inner_vertical;
+            gaps.inner_horizontal = pixels - config.gaps.inner_horizontal;
+            create_gaps_assignment(workspace, scope, gaps);
+        }
+    } else if (!strcmp(scope, "inner_vertical")) {
+        if (workspace == NULL)
+            config.gaps.inner_vertical = pixels;
+        else {
+            gaps.inner_vertical = pixels - config.gaps.inner_vertical;
+            create_gaps_assignment(workspace, scope, gaps);
+        }
+    } else if (!strcmp(scope, "inner_horizontal")) {
+        if (workspace == NULL)
+            config.gaps.inner_horizontal = pixels;
+        else {
+            gaps.inner_horizontal = pixels - config.gaps.inner_horizontal;
             create_gaps_assignment(workspace, scope, gaps);
         }
     } else if (!strcmp(scope, "outer")) {

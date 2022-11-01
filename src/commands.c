@@ -2428,9 +2428,15 @@ void cmd_gaps(I3_CMD, const char *type, const char *scope, const char *mode, con
                                                                                                                 \
         /* see issue 262 */                                                                                     \
         int min_value = 0;                                                                                      \
-        if (strcmp(#type, "inner") != 0) {                                                                      \
-            min_value = strcmp(scope, "all") ? -config.gaps.inner - workspace->gaps.inner : -config.gaps.inner; \
+        int min_value_vertical = 0; \
+        int min_value_horizontal = 0; \
+        if (strcmp(#type, "inner") != 0 || strcmp(#type, "inner_vertical") != 0) {                                                                      \
+            min_value_vertical = strcmp(scope, "all") ? -config.gaps.inner_vertical - workspace->gaps.inner_vertical : -config.gaps.inner_vertical; \
         }                                                                                                       \
+        if (strcmp(#type, "inner") != 0 || strcmp(#type, "inner_horizontal") != 0) {                                                                      \
+            min_value_horizontal = strcmp(scope, "all") ? -config.gaps.inner_horizontal - workspace->gaps.inner_horizontal : -config.gaps.inner_horizontal; \
+        }                                                                                                       \
+        min_value = min_value_vertical > min_value_horizontal ? min_value_vertical : min_value_horizontal; \
                                                                                                                 \
         if (current_value < min_value)                                                                          \
             current_value = min_value;                                                                          \
@@ -2441,11 +2447,16 @@ void cmd_gaps(I3_CMD, const char *type, const char *scope, const char *mode, con
 #define CMD_UPDATE_GAPS(type)                                                                              \
     do {                                                                                                   \
         if (!strcmp(scope, "all")) {                                                                       \
-            if (config.gaps.type + config.gaps.inner < 0)                                                  \
-                CMD_SET_GAPS_VALUE(type, -config.gaps.inner, true);                                        \
+            if (config.gaps.type + config.gaps.inner_vertical < 0)                                                  \
+                CMD_SET_GAPS_VALUE(type, -config.gaps.inner_vertical, true);                                        \
+            if (config.gaps.type + config.gaps.inner_horizontal < 0)                                                  \
+                CMD_SET_GAPS_VALUE(type, -config.gaps.inner_horizontal, true);                                        \
         } else {                                                                                           \
-            if (config.gaps.type + workspace->gaps.type + config.gaps.inner + workspace->gaps.inner < 0) { \
-                CMD_SET_GAPS_VALUE(type, -config.gaps.inner - workspace->gaps.inner, true);                \
+            if (config.gaps.type + workspace->gaps.type + config.gaps.inner_vertical + workspace->gaps.inner_vertical < 0) { \
+                CMD_SET_GAPS_VALUE(type, -config.gaps.inner_vertical - workspace->gaps.inner_vertical, true);                \
+            }                                                                                              \
+            if (config.gaps.type + workspace->gaps.type + config.gaps.inner_horizontal + workspace->gaps.inner_horizontal < 0) { \
+                CMD_SET_GAPS_VALUE(type, -config.gaps.inner_horizontal - workspace->gaps.inner_horizontal, true);                \
             }                                                                                              \
         }                                                                                                  \
     } while (0)
