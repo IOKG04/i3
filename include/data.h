@@ -154,6 +154,7 @@ struct gaps_t {
     int right;
     int bottom;
     int left;
+    int inner;
 };
 
 /**

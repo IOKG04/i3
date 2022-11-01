@@ -311,9 +311,10 @@ CFGFUN(gaps, const char *workspace, const char *scope, const long value) {
     int pixels = logical_px(value);
     gaps_t gaps = (gaps_t){0, 0, 0, 0, 0};
     if (!strcmp(scope, "inner")) {
-        if (workspace == NULL)
+        if (workspace == NULL){
             config.gaps.inner_vertical = pixels;
             config.gaps.inner_horizontal = pixels;
+        }
         else {
             gaps.inner_vertical = pixels - config.gaps.inner_vertical;
             gaps.inner_horizontal = pixels - config.gaps.inner_horizontal;

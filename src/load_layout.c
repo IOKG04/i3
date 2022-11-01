@@ -512,9 +512,10 @@ static int json_int(void *ctx, long long val) {
         }
     }
     if (parsing_gaps) {
-        if (strcasecmp(last_key, "inner") == 0)
+        if (strcasecmp(last_key, "inner") == 0){
             json_node->gaps.inner_vertical = val;
             json_node->gaps.inner_horizontal = val;
+        }
         else if (strcasecmp(last_key, "inner_vertical") == 0)
             json_node->gaps.inner_vertical = val;
         else if (strcasecmp(last_key, "inner_horizontal") == 0)
